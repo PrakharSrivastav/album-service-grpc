@@ -1,7 +1,7 @@
 package internal
 
 import (
-	"github.com/PrakharSrivastav/artist-service-grpc/internal/backend"
+	"github.com/PrakharSrivastav/album-service-grpc/internal/backend"
 )
 
 // Application is a wrapper for all the backend infrastructure

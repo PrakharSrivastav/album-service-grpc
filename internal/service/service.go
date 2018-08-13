@@ -1,10 +1,14 @@
 package service
 
-import "context"
-import pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
+import (
+	"context"
+
+	pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
+	"github.com/golang/protobuf/ptypes/empty"
+)
 
 type Service interface {
-	GetAll(ctx context.Context) ([]*pb.Artist, error)
-	GetArtistByAlbum(ctx context.Context, req *pb.SimpleArtistRequest) ([]*pb.Artist, error)
-	GetArtistByTrack(ctx context.Context, req *pb.SimpleArtistRequest) ([]*pb.Artist, error)
+	GetAll(*empty.Empty, pb.AlbumService_GetAllServer) error
+	GetAlbumByArtist(*pb.SimpleAlbumRequest, pb.AlbumService_GetAlbumByArtistServer) error
+	GetAlbumByTrack(context.Context, *pb.SimpleAlbumRequest) (*pb.Album, error)
 }
