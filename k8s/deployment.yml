@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: album-service
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: album-service
+    spec:
+      containers:
+        - name: album-service
+          image: prakharsrivastav/album:1
+          ports:
+            - name: grpc
+              containerPort: 6565

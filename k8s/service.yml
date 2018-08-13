@@ -1,0 +1,11 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: album-service
+spec:
+  type: NodePort
+  selector:
+    app: album-service
+  ports:
+    - port: 6565
+      targetPort: grpc
