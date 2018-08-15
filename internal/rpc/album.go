@@ -15,6 +15,9 @@ type AlbumService struct {
 	service service.Service
 }
 
+func (f *AlbumService) Get(_ context.Context, req *pb.SimpleAlbumRequest) (*pb.Album, error) {
+	return f.service.Get(req.GetId())
+}
 func (f *AlbumService) GetAll(_ *empty.Empty, stream pb.AlbumService_GetAllServer) error {
 
 	fmt.Println("Inside the function")

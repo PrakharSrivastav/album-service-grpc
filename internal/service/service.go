@@ -8,7 +8,9 @@ import (
 )
 
 type Service interface {
+	Get(id string) (*pb.Album, error)
 	GetAll(*empty.Empty, pb.AlbumService_GetAllServer) error
 	GetAlbumByArtist(*pb.SimpleAlbumRequest, pb.AlbumService_GetAlbumByArtistServer) error
 	GetAlbumByTrack(context.Context, *pb.SimpleAlbumRequest) (*pb.Album, error)
+	CleanupAndInit() error
 }

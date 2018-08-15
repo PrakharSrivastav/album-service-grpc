@@ -5,25 +5,28 @@ import (
 	"github.com/renstrom/shortuuid"
 )
 
+// Album represents an entity in database
 type Album struct {
-	Id       string
-	Name     string
-	ArtistId string
+	ID          string `db:"id"`
+	Name        string `db:"name"`
+	ArtistID    string `db:"artistId"`
+	Description string `db:"description"`
 }
 
 func NewAlbum() *Album {
 	return &Album{
-		Id:       shortuuid.New(),
+		ID:       shortuuid.New(),
 		Name:     "Some Name",
-		ArtistId: shortuuid.New(),
+		ArtistID: shortuuid.New(),
 	}
 }
 
+// ToProto converts the model to protofub format
 func (a *Album) ToProto() *pb.Album {
 	return &pb.Album{
-		Id:          a.Id,
+		Id:          a.ID,
 		Name:        a.Name,
-		ArtistId:    a.ArtistId,
-		Description: "Album desc",
+		ArtistId:    a.ArtistID,
+		Description: a.Description,
 	}
 }
