@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: album-service
-          image: prakharsrivastav/album:1
+          image: prakharsrivastav/album:2
           ports:
             - name: grpc
               containerPort: 6565
