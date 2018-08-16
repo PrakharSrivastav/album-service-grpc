@@ -1,7 +1,7 @@
 FROM golang:alpine as builder
 RUN apk update && apk add --no-cache git \
 	&& apk add --no-cache ca-certificates \
-	&& apk add --update --no-cache sqlite \
+	&& apk add --update --no-cache sqlite-libs sqlite-dev \
 	&& apk add --no-cache build-base \
 	&& adduser -D -g '' appuser \
 	&& mkdir /go/src/github.com \
@@ -12,11 +12,11 @@ WORKDIR  /go/src/github.com/PrakharSrivastav/album-service-grpc
 RUN go build -o app
 
 FROM alpine
-RUN mkdir /application
+RUN apk add --update sqlite && mkdir /application 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /go/src/github.com/PrakharSrivastav/album-service-grpc/app /application
 WORKDIR /application
-USER appuser
+# USER appuser
 EXPOSE 6565
 ENTRYPOINT ["/application/app"]
