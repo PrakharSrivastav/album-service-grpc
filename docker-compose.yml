@@ -2,6 +2,6 @@ version: '3'
 services:
   album:
     build: .
-    image: prakharsrivastav/album:1
+    image: prakharsrivastav/album:2
     ports:
       - '6565:6565'
