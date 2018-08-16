@@ -2,72 +2,65 @@ package rpc
 
 import (
 	"context"
-	"fmt"
 
-	"github.com/PrakharSrivastav/album-service-grpc/internal/model"
 	"github.com/PrakharSrivastav/album-service-grpc/internal/service"
 	pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
 	"github.com/golang/protobuf/ptypes/empty"
 	"google.golang.org/grpc"
 )
 
+// AlbumService implements all the functions defined in protobuf
 type AlbumService struct {
 	service service.Service
 }
 
+// Get fetches an album by Id
 func (f *AlbumService) Get(_ context.Context, req *pb.SimpleAlbumRequest) (*pb.Album, error) {
 	return f.service.Get(req.GetId())
 }
+
+// GetAll gets list of all the albums
 func (f *AlbumService) GetAll(_ *empty.Empty, stream pb.AlbumService_GetAllServer) error {
 
-	fmt.Println("Inside the function")
-	var albums []*model.Album
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	fmt.Println("Added to the list")
+	albums, err := f.service.GetAll()
+	if err != nil {
+		return err
+	}
+
 	for _, a := range albums {
-		fmt.Println("Iterating")
-		if err := stream.Send(a.ToProto()); err != nil {
-			fmt.Println("Error processing stream :: ", err.Error())
+		if err := stream.Send(a); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (f *AlbumService) GetAlbumByArtist(_ *pb.SimpleAlbumRequest, stream pb.AlbumService_GetAlbumByArtistServer) error {
-	fmt.Println("Inside the function")
-	var albums []*model.Album
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	albums = append(albums, model.NewAlbum())
-	fmt.Println("Added to the list")
+// GetAlbumByArtist gets all the albums for an artist
+func (f *AlbumService) GetAlbumByArtist(req *pb.SimpleAlbumRequest, stream pb.AlbumService_GetAlbumByArtistServer) error {
+	albums, err := f.service.GetAlbumByArtist(req.GetId())
+	if err != nil {
+		return err
+	}
+
 	for _, a := range albums {
-		fmt.Println("Iterating")
-		if err := stream.Send(a.ToProto()); err != nil {
-			fmt.Println("Error processing stream :: ", err.Error())
+		if err := stream.Send(a); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
-func (f *AlbumService) GetAlbumByTrack(_ context.Context, stream *pb.SimpleAlbumRequest) (*pb.Album, error) {
-	fmt.Println("Inside the function")
-	return model.NewAlbum().ToProto(), nil
+// GetAlbumByTrack fetches the album for a track
+func (f *AlbumService) GetAlbumByTrack(ctx context.Context, req *pb.SimpleAlbumRequest) (*pb.Album, error) {
+	return f.service.GetAlbumByTrack(ctx, req)
 }
 
+// Register registers implementation of ArtistService to grpc Server
 func (f *AlbumService) Register(server *grpc.Server) {
 	pb.RegisterAlbumServiceServer(server, f)
 }
 
+// New returns a new instance of AlbumService
 func New(service service.Service) *AlbumService {
 	return &AlbumService{
 		service: service,

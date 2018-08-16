@@ -35,7 +35,7 @@ func NewGrpcServer() *Server {
 
 // Start runs a server on a specific port
 func (s *Server) Start() error {
-	port := "6565"
+	port := "6566"
 	addr := fmt.Sprintf(":%s", port)
 
 	lis, err := net.Listen("tcp", addr)

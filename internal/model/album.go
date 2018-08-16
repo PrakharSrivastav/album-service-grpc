@@ -2,7 +2,6 @@ package model
 
 import (
 	pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
-	"github.com/renstrom/shortuuid"
 )
 
 // Album represents an entity in database
@@ -11,14 +10,6 @@ type Album struct {
 	Name        string `db:"name"`
 	ArtistID    string `db:"artistId"`
 	Description string `db:"description"`
-}
-
-func NewAlbum() *Album {
-	return &Album{
-		ID:       shortuuid.New(),
-		Name:     "Some Name",
-		ArtistID: shortuuid.New(),
-	}
 }
 
 // ToProto converts the model to protofub format

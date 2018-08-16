@@ -4,13 +4,12 @@ import (
 	"context"
 
 	pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
-	"github.com/golang/protobuf/ptypes/empty"
 )
 
 type Service interface {
 	Get(id string) (*pb.Album, error)
-	GetAll(*empty.Empty, pb.AlbumService_GetAllServer) error
-	GetAlbumByArtist(*pb.SimpleAlbumRequest, pb.AlbumService_GetAlbumByArtistServer) error
+	GetAll() ([]*pb.Album, error)
+	GetAlbumByArtist(album string) ([]*pb.Album, error)
 	GetAlbumByTrack(context.Context, *pb.SimpleAlbumRequest) (*pb.Album, error)
 	CleanupAndInit() error
 }
