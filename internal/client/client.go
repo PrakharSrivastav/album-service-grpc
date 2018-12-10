@@ -4,16 +4,16 @@ import pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
 import "google.golang.org/grpc"
 
 type Client struct {
-	artistClientRpc pb.ArtistServiceClient
-	trackClientRpc  pb.TrackServiceClient
+	artistClientRPC pb.ArtistServiceClient
+	trackClientRPC  pb.TrackServiceClient
 }
 
 func NewClient() *Client {
 	c := Client{}
 	connArtist := getConnection("artist-service-client", "artist-service:6565")
 	connTracks := getConnection("track-service-client", "track-service:6565")
-	c.artistClientRpc = pb.NewArtistServiceClient(connArtist)
-	c.trackClientRpc = pb.NewTrackServiceClient(connTracks)
+	c.artistClientRPC = pb.NewArtistServiceClient(connArtist)
+	c.trackClientRPC = pb.NewTrackServiceClient(connTracks)
 	return &c
 }
 

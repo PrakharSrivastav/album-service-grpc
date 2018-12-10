@@ -8,5 +8,5 @@ import (
 
 // GetTrack gets the track details by Id
 func (c *Client) GetTrack(ctx context.Context, id string) (*pb.Track, error) {
-	return c.trackClientRpc.Get(ctx, &pb.SimpleTrackRequest{Id: id})
+	return c.trackClientRPC.Get(ctx, &pb.SimpleTrackRequest{Id: id})
 }

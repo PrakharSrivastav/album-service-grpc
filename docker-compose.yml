@@ -1,7 +1,12 @@
 version: '3'
 services:
-  album:
+  album-service:
     build: .
     image: prakharsrivastav/album:2
-    ports:
-      - '6565:6565'
+#    ports:
+#      - '6563:6565'
+
+networks:
+  default:
+    external:
+      name: gql-server-nw
