@@ -3,8 +3,8 @@ services:
   album-service:
     build: .
     image: prakharsrivastav/album:2
-#    ports:
-#      - '6563:6565'
+    ports:
+      - '6563:6565'
 
 networks:
   default:
