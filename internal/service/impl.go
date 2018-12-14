@@ -2,6 +2,9 @@ package service
 
 import (
 	"context"
+	"github.com/opentracing/opentracing-go"
+	"github.com/opentracing/opentracing-go/log"
+	"time"
 
 	"github.com/PrakharSrivastav/album-service-grpc/internal/client"
 	pb "github.com/PrakharSrivastav/gql-grpc-defintions/go/schema"
@@ -14,10 +17,10 @@ type impl struct {
 }
 
 // Create a new service implementation
-func New(db *sqlx.DB) Service {
+func New(db *sqlx.DB, tracer opentracing.Tracer) Service {
 	return &impl{
 		repo:   &repository{db: db},
-		client: client.NewClient(),
+		client: client.NewClient(tracer),
 	}
 }
 
@@ -60,6 +63,12 @@ func (f *impl) GetAlbumByArtist(artistID string) ([]*pb.Album, error) {
 
 // GetAlbumByTrack get the album for a track
 func (f *impl) GetAlbumByTrack(ctx context.Context, req *pb.SimpleAlbumRequest) (*pb.Album, error) {
+	span := opentracing.SpanFromContext(ctx)
+	span.LogFields(
+		log.String("client-service", "album-service-get-album-by-track"),
+		log.Int64("now", time.Now().Unix()),
+	)
+	defer span.Finish()
 	trackID := req.GetId()
 
 	track, err := f.client.GetTrack(ctx, trackID)
